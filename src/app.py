@@ -1,7 +1,19 @@
 from flask import Flask,g,jsonify,render_template,request
 import sqlite3
 import datetime
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 app = Flask(__name__)
+
+
+# Initialize Flask-Limiter
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],  
+    storage_uri="memory://"
+)
 
 database = "Task.db"
 
